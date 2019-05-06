@@ -1,5 +1,42 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "header.h"
+
+int avl(char *in, char *out) {
+    unsigned int n;
+    FILE *f1 = fopen(in, "rb");
+    FILE *f2 = fopen(out, "wb");
+    if (f1 == NULL) {
+        return 1;
+    }
+    if (f2 == NULL) {
+        return 1;
+    }
+
+    fscanf(f1, "%d", &n);
+
+    if (n == 0) {
+        printf("0");
+        return 0;
+    }
+
+    node *tree = NULL;
+    for (unsigned int i = 0; i < n; i++) {
+        int a;
+        fscanf(f1, "%d", &a);
+        tree = insert(a, tree);
+    }
+    fprintf(f2, "%d", tree->height);
+    delete_tree(tree);
+    fclose(f1);
+    fclose(f2);
+    return 0;
+}
+
+void print_help(void) {
+    printf("AVL: <inputfile> <outputfile>");
+}
+
 
 int tree_balance_factor(node *p) {
     int heightleft;
